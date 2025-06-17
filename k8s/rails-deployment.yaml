@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rails-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rails
+  template:
+    metadata:
+      labels:
+        app: rails
+    spec:
+      containers:
+      - name: rails
+        image: aslindhurai/rails-app:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DATABASE_HOST
+          value: postgres
+        - name: DATABASE_USERNAME
+          value: postgres
+        - name: DATABASE_PASSWORD
+          value: password
+        - name: RAILS_ENV
+          value: development
+
