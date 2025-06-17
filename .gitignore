@@ -8,7 +8,7 @@ tmp/
 *.log
 *.pid
 *.swp
-tekton/tasks/.gitcredentials
+tekton/tasks/.git-credentials
 
 # Ignore Kubernetes and Tekton specific cache files (if any)
 *.bak
