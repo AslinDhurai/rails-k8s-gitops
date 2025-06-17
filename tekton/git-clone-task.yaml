@@ -1,0 +1,32 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: git-clone
+spec:
+  params:
+    - name: url
+      type: string
+    - name: revision
+      type: string
+  workspaces:
+    - name: output
+    - name: basic-auth
+  steps:
+    - name: clone
+      image: alpine/git
+      script: |
+        #!/bin/sh
+        set -e
+        CHECKOUT_DIR=/workspace/output
+        if [ "$(ls -A $CHECKOUT_DIR)" ]; then
+          echo "Cleaning $CHECKOUT_DIR"
+          rm -rf $CHECKOUT_DIR/*
+        fi
+        cd $CHECKOUT_DIR
+        git config --global credential.helper store
+        if [ -f /workspace/basic-auth/.git-credentials ]; then
+          cp /workspace/basic-auth/.git-credentials ~/.git-credentials
+        fi
+        git clone $(params.url) .
+        git checkout $(params.revision)
+

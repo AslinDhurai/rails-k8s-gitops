@@ -1,0 +1,27 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: kaniko-task
+spec:
+  params:
+    - name: IMAGE
+      description: Destination image name
+      type: string
+  workspaces:
+    - name: source
+      description: The workspace with Dockerfile
+    - name: docker-config
+      description: For pushing to DockerHub
+  steps:
+    - name: kaniko
+      image: gcr.io/kaniko-project/executor:latest
+      env:
+        - name: DOCKER_CONFIG
+          value: /workspace/docker-config
+      command:
+        - /kaniko/executor
+      args:
+        - --dockerfile=/workspace/source/Dockerfile
+        - --context=/workspace/source
+        - --destination=$(params.IMAGE)
+

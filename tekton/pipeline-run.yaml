@@ -1,0 +1,24 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  generateName: rails-kaniko-run-
+spec:
+  pipelineRef:
+    name: rails-kaniko-pipeline
+  workspaces:
+    - name: shared-workspace
+      emptyDir: {}
+    - name: basic-auth
+      secret:
+        secretName: github-secret
+    - name: docker-config
+      secret:
+        secretName: docker-config
+  params:
+    - name: repo-url
+      value: https://github.com/AslinDhurai/rails-k8s-gitops.git
+    - name: revision
+      value: main
+    - name: IMAGE
+      value: docker.io/aslindhurai/rails-app:latest
+

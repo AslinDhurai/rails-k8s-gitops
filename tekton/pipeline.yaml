@@ -1,0 +1,42 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: rails-kaniko-pipeline
+spec:
+  workspaces:
+    - name: shared-workspace
+    - name: basic-auth
+    - name: docker-config
+  params:
+    - name: repo-url
+    - name: revision
+    - name: IMAGE
+  tasks:
+    - name: clone
+      taskRef:
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+        - name: basic-auth
+          workspace: basic-auth
+      params:
+        - name: url
+          value: $(params.repo-url)
+        - name: revision
+          value: $(params.revision)
+
+    - name: build-and-push
+      taskRef:
+        name: kaniko-task
+      runAfter:
+        - clone
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+        - name: docker-config
+          workspace: docker-config
+      params:
+        - name: IMAGE
+          value: $(params.IMAGE)
+
