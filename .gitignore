@@ -1,5 +1,6 @@
 # Ignore secret files
 tekton/secrets/github-secret.yaml
+tekton/tasks/.git-credentials
 
 # Node/Rails artifacts if applicable
 node_modules/
@@ -8,7 +9,6 @@ tmp/
 *.log
 *.pid
 *.swp
-tekton/tasks/.git-credentials
 
 # Ignore Kubernetes and Tekton specific cache files (if any)
 *.bak
