@@ -9,6 +9,10 @@ spec:
     - name: revision
       type: string
       default: "main"
+    - name: username
+      type: string
+    - name: password
+      type: string
   workspaces:
     - name: output
     - name: basic-auth
@@ -19,5 +23,6 @@ spec:
       script: |
         #!/bin/sh
         git config --global credential.helper store
+        echo "https://$(params.username):$(params.password)@github.com" > ~/.git-credentials
         git clone $(params.url) --branch $(params.revision) /workspace/output
 

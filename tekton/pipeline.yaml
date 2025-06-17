@@ -5,9 +5,12 @@ metadata:
 spec:
   params:
     - name: url
+      type: string
     - name: revision
-      default: main
+      type: string
+      default: "main"
     - name: IMAGE
+      type: string
   workspaces:
     - name: shared-workspace
     - name: basic-auth
@@ -15,26 +18,36 @@ spec:
     - name: clone
       taskRef:
         name: git-clone
-      workspaces:
-        - name: output
-          workspace: shared-workspace
-        - name: basic-auth
-          workspace: basic-auth
       params:
         - name: url
           value: $(params.url)
         - name: revision
           value: $(params.revision)
+        - name: username
+          valueFrom:
+            secretKeyRef:
+              name: github-secret
+              key: username
+        - name: password
+          valueFrom:
+            secretKeyRef:
+              name: github-secret
+              key: password
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+        - name: basic-auth
+          workspace: basic-auth
 
     - name: build-and-push
-      taskRef:
-        name: build-and-push-kaniko
       runAfter:
         - clone
+      taskRef:
+        name: kaniko-task
       params:
         - name: IMAGE
           value: $(params.IMAGE)
       workspaces:
-        - name: output
+        - name: source
           workspace: shared-workspace
 
