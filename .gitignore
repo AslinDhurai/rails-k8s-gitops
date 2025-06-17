@@ -1,6 +1,5 @@
 # Ignore secret files
 tekton/secrets/github-secret.yaml
-tekton/.git-credentials
 
 # Node/Rails artifacts if applicable
 node_modules/
