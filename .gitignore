@@ -1,0 +1,20 @@
+# Ignore secret files
+tekton/secrets/github-secret.yaml
+
+# Node/Rails artifacts if applicable
+node_modules/
+log/
+tmp/
+*.log
+*.pid
+*.swp
+
+# Ignore Kubernetes and Tekton specific cache files (if any)
+*.bak
+*.tmp
+
+# Ignore local IDE/editor files
+.vscode/
+.idea/
+*.DS_Store
+
