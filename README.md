@@ -10,6 +10,7 @@ This repository contains Kubernetes manifests and an ArgoCD configuration for de
 .
 ├── argocd/        # ArgoCD Application and ConfigMaps
 ├── k8s/           # Kubernetes manifests for Rails and PostgreSQL
+└── rails-app/     # Rails application source code
 ```
 
 ---
@@ -89,3 +90,55 @@ kubectl delete -f argocd/
 
 **Aslin Dhurai**  
 📌 [GitHub Profile](https://github.com/AslinDhurai)
+
+## 🔧 CI/CD with Tekton
+
+This project also supports container image builds using **Tekton Pipelines**.
+
+### ✅ Prerequisites
+
+- Tekton Pipelines installed on the Kubernetes cluster
+- DockerHub account with username and personal access token
+- A PersistentVolumeClaim for shared workspace
+
+### 📁 Tekton Directory Structure
+
+```
+tekton/
+├── tasks/
+│   └── kaniko-task.yaml         # Task to build and push Docker image using Kaniko
+├── git-clone-task.yaml          # Task to clone the Git repo
+├── pipeline.yaml                # Defines the full pipeline
+├── pipeline-run.yaml            # Triggers the pipeline
+└── workspace-pvc.yaml           # PVC definition
+```
+
+### 🚀 Applying Tekton Resources
+
+1. Apply the PVC (shared workspace):
+   ```bash
+   kubectl apply -f tekton/workspace-pvc.yaml
+   ```
+
+2. Apply Tasks:
+   ```bash
+   kubectl apply -f tekton/git-clone-task.yaml
+   kubectl apply -f tekton/tasks/kaniko-task.yaml
+   ```
+
+3. Apply the Pipeline:
+   ```bash
+   kubectl apply -f tekton/pipeline.yaml
+   ```
+
+4. Trigger the PipelineRun:
+   > ⚠️ Edit `pipeline-run.yaml` to include your DockerHub credentials as `username` and `password` params, or configure them as secrets and mount via workspaces.
+   ```bash
+   kubectl create -f tekton/pipeline-run.yaml
+   ```
+
+5. Monitor status:
+   ```bash
+   tkn pipelinerun logs -f
+   kubectl get taskruns
+   ```
