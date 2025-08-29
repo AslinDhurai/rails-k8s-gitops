@@ -4,6 +4,14 @@ This repository contains Kubernetes manifests and an ArgoCD configuration for de
 
 ---
 
+## 🎥 Project Explanation Video
+
+For a detailed explanation of the **contents of this repository**, including the directory structure and how each part fits together, watch the video here:
+
+[▶️ Watch on Google Drive](https://drive.google.com/file/d/1Q2SLz1hlQlmQeueIZ0g-gHCzenOUEGSD/view?usp=sharing)
+
+---
+
 ## 📁 Directory Structure
 
 ```
