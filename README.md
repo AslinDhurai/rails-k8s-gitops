@@ -140,7 +140,7 @@ tekton/
    ```
 
 4. Trigger the PipelineRun:
-   > ⚠️ Edit `pipeline-run.yaml` to include your DockerHub credentials as `username` and `password` params, or configure them as secrets and mount via workspaces.
+   > ⚠️ Edit `pipeline-run.yaml` to include your DockerHub credentials as `username` and `password` params, or configure them as secrets and mount via workspaces
    ```bash
    kubectl create -f tekton/pipeline-run.yaml
    ```
